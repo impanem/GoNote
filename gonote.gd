@@ -7,14 +7,21 @@ const LOCAL_SAVED_NOTES_FILEPATH: String = "res://addons/GoNote/saved_notes/"
 @onready var note_tab_container = $MarginContainer/VBoxContainer/NoteTabContainer
 @onready var note_options_hbox = $MarginContainer/VBoxContainer/Button_Container_Hbox/NoteOptionsHbox
 @onready var home = $MarginContainer/VBoxContainer/NoteTabContainer/Home
+@onready var save_label = $MarginContainer/VBoxContainer/Button_Container_Hbox/NoteOptionsHbox/Save_Hbox/SaveLabel
 #endregion
 
 #region Note Vars
 var current_tab_index: int = 0
-var current_text_box: TextEdit = null
+var current_text_box_node: TextEdit = null
 
 const MAX_NEW_NOTE_NAME_LENGTH: int = 40
 const NOTE_PLACEHOLDER_TEXT: String = "I am an empty note... Please write on me...!"
+
+var current_note_unsaved: bool = false
+var saved_note_names_for_save_check = null
+var saved_note_contents_for_save_check = ""
+const UNSAVED_TEXT = "[color=#FF0000]* PLEASE SAVE NOTE CHANGES *[/color]"
+const SAVED_TEXT = "[color=green]UNCHANGED[/color]"
 #endregion
 
 #region Filename Vars
@@ -42,6 +49,7 @@ func _ready():
 
 func _process(delta):
 	check_new_file_name_input()
+	check_if_not_saved()
 	
 	if filename_is_valid:
 		if new_note_button.is_disabled():
@@ -106,14 +114,15 @@ func _on_new_note_line_edit_text_submitted(new_text):
 func _on_tab_container_tab_selected(tab):
 	if tab != 0:
 		current_tab_index = tab
-		current_text_box = note_tab_container.get_current_tab_control()
+		current_text_box_node = note_tab_container.get_current_tab_control()
+		get_note_contents_save_check(tab, current_text_box_node)
 #endregion
 
 #region Deleting and Clearing Funcs
 func _on_clear_text_button_pressed():
 	if current_tab_index != 0:
-		if current_text_box != null:
-			current_text_box.menu_option(TextEdit.MenuItems.MENU_CLEAR)
+		if current_text_box_node != null:
+			current_text_box_node.menu_option(TextEdit.MenuItems.MENU_CLEAR)
 		else:
 			push_warning("GoNote: Tried to clear a note that doesn't exist.")
 	else:
@@ -121,12 +130,12 @@ func _on_clear_text_button_pressed():
 
 func _on_delete_note_button_pressed():
 	if current_tab_index != 0:
-		if current_text_box != null:
+		if current_text_box_node != null:
 			note_tab_container.remove_child(note_tab_container.get_child(current_tab_index))
 			
 			if DirAccess.dir_exists_absolute(LOCAL_SAVED_NOTES_FILEPATH):
 				if not DirAccess.get_files_at(LOCAL_SAVED_NOTES_FILEPATH).is_empty():
-					var file_to_delete_name = current_text_box.get_name() + ".txt"
+					var file_to_delete_name = current_text_box_node.get_name() + ".txt"
 					
 					if FileAccess.file_exists(LOCAL_SAVED_NOTES_FILEPATH + file_to_delete_name):
 						DirAccess.remove_absolute(LOCAL_SAVED_NOTES_FILEPATH + file_to_delete_name)
@@ -155,14 +164,16 @@ func _on_save_note_local_button_pressed():
 		scan_project_filesystem()
 	
 	if current_tab_index != 0:
-		if current_text_box != null:
-			var new_filename = current_text_box.get_name() + ".txt"
+		if current_text_box_node != null:
+			var new_filename = current_text_box_node.get_name() + ".txt"
 			var new_filepath = LOCAL_SAVED_NOTES_FILEPATH + new_filename
 			
 			var new_note_to_save = FileAccess.open(new_filepath, FileAccess.WRITE)
 			if new_note_to_save:
-				new_note_to_save.store_string(current_text_box.get_text())
+				new_note_to_save.store_string(current_text_box_node.get_text())
 				new_note_to_save.close()
+				
+				get_note_contents_save_check(current_tab_index, current_text_box_node)
 				
 				scan_project_filesystem()
 				
@@ -203,6 +214,26 @@ func load_saved_notes():
 				note_tab_container.add_child(new_note_node)
 			
 			scan_project_filesystem()
+
+func get_note_contents_save_check(note_index: int, note_box: TextEdit):
+	if note_index != 0 and note_box != null:
+		if DirAccess.dir_exists_absolute(LOCAL_SAVED_NOTES_FILEPATH):
+			if not DirAccess.get_files_at(LOCAL_SAVED_NOTES_FILEPATH).is_empty():
+				saved_note_names_for_save_check = DirAccess.get_files_at(LOCAL_SAVED_NOTES_FILEPATH)
+				
+				var note_name = note_box.get_name() + ".txt"
+				
+				if FileAccess.file_exists(LOCAL_SAVED_NOTES_FILEPATH + note_name):
+					var file_to_load = FileAccess.open(LOCAL_SAVED_NOTES_FILEPATH + note_name, FileAccess.READ)
+					saved_note_contents_for_save_check = file_to_load.get_as_text()
+
+func check_if_not_saved():
+	if current_tab_index != 0 and current_text_box_node != null:
+		if not saved_note_contents_for_save_check == "":
+			if current_text_box_node.get_text() != saved_note_contents_for_save_check:
+				save_label.set_text(UNSAVED_TEXT)
+			else:
+				save_label.set_text(SAVED_TEXT)
 #endregion
 
 #region Misc Funcs
@@ -210,7 +241,10 @@ func load_saved_notes():
 func set_to_home_tab():
 	new_text_filename = ""
 	current_tab_index = 0
-	current_text_box = null
+	current_text_box_node = null
+	current_note_unsaved = false
+	saved_note_names_for_save_check = null
+	saved_note_contents_for_save_check = ""
 	
 	note_tab_container.set_current_tab(0)
 

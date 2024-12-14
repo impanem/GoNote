@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://8rtq81icu1rb"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_oe3sc"]
+
+[resource]
+RichTextLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+RichTextLabel/constants/outline_size = 6
+RichTextLabel/styles/normal = SubResource("StyleBoxEmpty_oe3sc")
