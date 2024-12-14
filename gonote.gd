@@ -20,8 +20,8 @@ const NOTE_PLACEHOLDER_TEXT: String = "I am an empty note... Please write on me.
 var current_note_unsaved: bool = false
 var saved_note_names_for_save_check = null
 var saved_note_contents_for_save_check = ""
-const UNSAVED_TEXT = "[color=#FF0000]* PLEASE SAVE NOTE CHANGES *[/color]"
-const SAVED_TEXT = "[color=green]UNCHANGED[/color]"
+const UNSAVED_TEXT = "[color=#FF0000][right]* PLEASE SAVE NOTE CHANGES *[/right][/color]"
+const SAVED_TEXT = "[color=green][right]UNCHANGED[/right][/color]"
 #endregion
 
 #region Filename Vars
