@@ -31,7 +31,7 @@ current_tab = 0
 [node name="Home" type="RichTextLabel" parent="MarginContainer/VBoxContainer/NoteTabContainer"]
 layout_mode = 2
 bbcode_enabled = true
-text = "Welcome to [rainbow freq=0.3 sat=0.3]GoNote ver. 1.0[/rainbow]!
+text = "Welcome to [rainbow freq=0.3 sat=0.3]GoNote ver. 1.1[/rainbow]!
 A Plugin by: [wave amp=5.0 freq=2.0]@Kreaytore[/wave].
 
 [b]What is GoNote?[/b]:
@@ -49,6 +49,7 @@ forget them later. You can also save these notes to your project directory.
 - Saved notes are located at: \"res://addons/GoNote/saved_notes/\". GoNote will attempt to create the directory if it doesn't exist.
 - When you Delete a note, it will also delete the saved note in the save file (if there is one)!
 - All .txt files in the save directory are loaded on Plugin/Engine start. So if you accidentally pressed \"Clear\" on a note, restart the Plugin/Engine!
+- Pressing \"Ctrl + S\" will also save the current unsaved note.
 
 Enjoy!"
 metadata/_tab_index = 0

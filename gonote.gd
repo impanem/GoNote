@@ -8,6 +8,7 @@ const LOCAL_SAVED_NOTES_FILEPATH: String = "res://addons/GoNote/saved_notes/"
 @onready var note_options_hbox = $MarginContainer/VBoxContainer/Button_Container_Hbox/NoteOptionsHbox
 @onready var home = $MarginContainer/VBoxContainer/NoteTabContainer/Home
 @onready var save_label = $MarginContainer/VBoxContainer/Button_Container_Hbox/NoteOptionsHbox/Save_Hbox/SaveLabel
+@onready var save_note_local_button = $MarginContainer/VBoxContainer/Button_Container_Hbox/NoteOptionsHbox/Save_Hbox/SaveNoteLocalButton
 #endregion
 
 #region Note Vars
@@ -46,6 +47,12 @@ func _ready():
 		scan_project_filesystem()
 	
 	load_saved_notes()
+
+func _input(event):
+	if event is InputEventKey and event.is_pressed():
+		if event.get_keycode() == KEY_S and event.is_ctrl_pressed():
+			if current_tab_index != 0 and current_text_box_node != null:
+				_on_save_note_local_button_pressed()
 
 func _process(delta):
 	check_new_file_name_input()
@@ -116,6 +123,8 @@ func _on_tab_container_tab_selected(tab):
 		current_tab_index = tab
 		current_text_box_node = note_tab_container.get_current_tab_control()
 		get_note_contents_save_check(tab, current_text_box_node)
+	else:
+		current_text_box_node = null
 #endregion
 
 #region Deleting and Clearing Funcs
@@ -179,7 +188,6 @@ func _on_save_note_local_button_pressed():
 				
 			else:
 				push_warning("GoNote: Failed to write new text file.")
-			
 		else:
 			push_warning("GoNote: Tried to save a note that doesn't exist.")
 	else:
@@ -232,8 +240,10 @@ func check_if_not_saved():
 		if not saved_note_contents_for_save_check == "":
 			if current_text_box_node.get_text() != saved_note_contents_for_save_check:
 				save_label.set_text(UNSAVED_TEXT)
+				current_note_unsaved = true
 			else:
 				save_label.set_text(SAVED_TEXT)
+				current_note_unsaved = false
 #endregion
 
 #region Misc Funcs
