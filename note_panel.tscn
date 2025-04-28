@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bikpjuf802o2u"]
 
-[ext_resource type="Script" path="res://addons/GoNote/gonote.gd" id="1_kjlga"]
+[ext_resource type="Script" uid="uid://ca1yavoqbstll" path="res://addons/GoNote/gonote.gd" id="1_kjlga"]
 [ext_resource type="Theme" uid="uid://8rtq81icu1rb" path="res://addons/GoNote/saved_unsaved_theme.tres" id="2_kb70x"]
 
 [node name="GoNote" type="Control"]
@@ -31,7 +31,7 @@ current_tab = 0
 [node name="Home" type="RichTextLabel" parent="MarginContainer/VBoxContainer/NoteTabContainer"]
 layout_mode = 2
 bbcode_enabled = true
-text = "Welcome to [rainbow freq=0.3 sat=0.3]GoNote ver. 1.1[/rainbow]!
+text = "Welcome to [rainbow freq=0.3 sat=0.3]GoNote ver. 1.2[/rainbow]!
 A Plugin by: [wave amp=5.0 freq=2.0]@Kreaytore[/wave].
 
 [b]What is GoNote?[/b]:
