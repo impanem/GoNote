@@ -1,7 +1,7 @@
 # GoNote
 An in-engine Godot notepad plugin that allows you to quickly write down and save notes about your project for you to revisit later!
 
-By: [@Kreaytore](https://x.com/kreaytore)
+By: [@Panem](https://x.com/im_panem)
 
 ![An image of GoNote's Home Tab](git_pics/Home.jpg)
 
