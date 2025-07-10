@@ -1,7 +1,7 @@
 # GoNote
 An in-engine Godot notepad plugin that allows you to quickly write down and save notes about your project for you to revisit later!
 
-By: [@Im_Panem](https://x.com/im_panem)
+By: [@kreay_panem](https://x.com/kreay_panem)
 
 ![An image of GoNote's Home Tab](git_pics/Home.jpg)
 
@@ -21,8 +21,8 @@ GoNote is a Godot Plugin that adds an in-engine notepad. You can quickly write d
 This is how your addons folder should look:
 ```
 res://
-    addons
-        GoNote
+	addons
+		GoNote
 ```
 
 **Remember, if you downloaded the .zip from git, and your file says `GoNote-main`, you need to delete the *-main* part of the filename. Otherwise, issues will occur, and the plugin won't work!**

@@ -1,6 +1,12 @@
 @tool
 extends Control
 
+"""
+GoNote: In-editor Notepad
+Author: @kreay_panem
+Created: December 14th, 2024
+"""
+
 const LOCAL_SAVED_NOTES_FILEPATH: String = "res://addons/GoNote/saved_notes/"
 
 #region Containers and Home Vars
